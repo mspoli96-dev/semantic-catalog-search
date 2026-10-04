@@ -10,6 +10,11 @@
 - Defined ten small development queries before the first embedding evaluation. Semantic search put an expected product first in eight cases; keyword search did so in three. The rain and negation failures are retained in the results.
 - Passed 12 tests, TypeScript checking, and the production build. The dependency audit reported zero known vulnerabilities after pinning a patched transitive image library.
 - Verified browser inference with a new reading-light query, category/price filters, last-request handling, clearing, and a 375-pixel viewport without horizontal overflow. Browser console checks were clean.
-- Public source and deployment verification are recorded in the validation document as they complete. The companion article remains an editorial draft until publication approval.
+- Published source revision `28fcd7c86ea6bb08d0340574ab7b6c1adef1065e` to the [public repository](https://github.com/mspoli96-dev/semantic-catalog-search).
+- [GitHub CI passed](https://github.com/mspoli96-dev/semantic-catalog-search/actions/runs/37170195895), and the Git-linked [Vercel production deployment](https://webytex-semantic-search.vercel.app) became ready and promoted at the same revision.
+- The first hosted browser inference attempt failed during model download. A diagnostic revision (`8381d9d`) reported `MODEL_DOWNLOAD:NETWORK` and [passed CI](https://github.com/mspoli96-dev/semantic-catalog-search/actions/runs/37170824722). Successful local inference with cached assets did not resolve the hosted failure.
+- Prepared a change to stage pinned, SHA-256-verified model and tokenizer files during `prepare:model`, automatically before development and production builds. The browser will load those assets from the demo's origin with remote-model fallback disabled. The inference runtime's public CDN remains unchanged.
+- Generated model assets remain Git-ignored and include `LICENSE-NOTICES.txt` with the Apache License text plus source/revision/hash metadata. The correction does not change the catalogue, evaluation cases, embedding configuration, or on-device inference design. Its 14 unit tests and type checking passed; final build and hosted inference checks remain pending.
+- The companion article remains an unpublished draft and is excluded from the public source tree.
 
 The product and article were developed with AI assistance and human direction. The evaluation is a small development check, not evidence of general retrieval accuracy, conversion lift, or customer ROI.

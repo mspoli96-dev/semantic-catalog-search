@@ -1,6 +1,6 @@
 # Validation
 
-Checked October 3, 2026, America/Montevideo. Evidence covers local code, generated catalogue embeddings, actual local-model comparisons, and local production-browser interaction. The public repository is created and the demo URL assigned; source publication and hosted verification remain pending.
+The October 3, 2026 local checkpoint covers code, catalogue embeddings, real-model comparisons, and local production-browser interaction. Public source and CI were subsequently verified. The initial hosted browser attempt failed during model download; a same-origin asset correction remains pending final build and hosted verification.
 
 ## Catalogue
 
@@ -48,8 +48,8 @@ Two semantic errors matter: the unfiltered walking-in-rain query ranks Trail Day
 | Check | Status |
 | --- | --- |
 | TypeScript | Passed |
-| Unit tests | 12 passed |
-| Production build | Passed; final local build checkpoint at 23:01 Montevideo |
+| Unit tests | Latest local run: 14 passed, including safe model-loading error diagnostics |
+| Production build | Initial local build passed at 23:01 Montevideo; the same-origin asset correction awaits its final build check |
 | Catalogue embedding generation | Passed; 48 vectors, 384 dimensions, normalized; index 210,556 bytes |
 | Actual-model relevance evaluation | Completed for all ten authored queries; results and failures above |
 | Browser model loading and live query inference | Passed locally: noisy-office query ranked Quiet Focus Headphones first; additional reading-after-dark query ranked Clip-On Reading Light first |
@@ -60,7 +60,7 @@ Two semantic errors matter: the unfiltered walking-in-rain query ranks Trail Day
 | Production browser console | No warnings or errors captured in the local check |
 | Full keyboard and model-download error coverage | Pending |
 | Query privacy | Worker source has no query-upload API; browser request-payload tracing was not available, so no measured network-trace claim is made |
-| Public source and hosted deployment | Repository created and demo URL assigned; source publication and hosted checks pending |
+| Public source and hosted deployment | Source pushed and CI passed; initial deployment ready, but hosted model download failed; correction pending retest |
 | Runtime dependency audit | Zero reported vulnerabilities at the verification checkpoint; not a security certification |
 
 The selected model weight file contains 22,972,370 bytes, approximately 23 MB, plus separate tokenizer and runtime assets. Measure the actual browser transfer separately before describing total page weight or startup time.
@@ -73,6 +73,16 @@ Linux CPU installs skip optional CUDA downloads through `ONNXRUNTIME_NODE_INSTAL
 
 ## Publication destinations
 
-- Repository: [mspoli96-dev/semantic-catalog-search](https://github.com/mspoli96-dev/semantic-catalog-search), created.
-- Demo: [webytex-semantic-search.vercel.app](https://webytex-semantic-search.vercel.app), assigned to the new project.
-- Hosted inference, the public source revision, and GitHub CI are not yet verified at this checkpoint.
+- Repository: [mspoli96-dev/semantic-catalog-search](https://github.com/mspoli96-dev/semantic-catalog-search), initial source published at `28fcd7c86ea6bb08d0340574ab7b6c1adef1065e`.
+- The initial [GitHub CI](https://github.com/mspoli96-dev/semantic-catalog-search/actions/runs/37170195895) passed. The later diagnostic revision `8381d9d` also [passed CI](https://github.com/mspoli96-dev/semantic-catalog-search/actions/runs/37170824722).
+- Demo: [webytex-semantic-search.vercel.app](https://webytex-semantic-search.vercel.app). The initial Git-linked deployment became ready and promoted. This did not establish successful inference: its browser attempt reported `MODEL_DOWNLOAD:NETWORK`.
+
+## Hosted model-loading correction
+
+Local inference with cached assets succeeded while the hosted attempt failed in the model-download stage. This identifies the failing stage, not a proven cause in a particular network, CDN, or browser policy.
+
+The correction stages pinned model files during `prepare:model`, which runs automatically before development and production builds. Files are checked against a SHA-256 manifest and served from `public/models/<revision>/Xenova/all-MiniLM-L6-v2/` on the demo's own origin. The browser worker disables remote-model fallback. Generated weights remain outside Git; fresh build environments download them before packaging the site.
+
+This changes asset delivery, not the embedding model, catalogue, or inference location. Runtime files still come from their public CDN. The application has no hosted inference API and does not upload the query to a model provider.
+
+The corrected implementation passed 14 unit tests and type checking. Final preparation/build checks and a fresh hosted browser inference test are pending. The existing relevance report remains a local-model result and must not be relabelled as proof that the hosted correction works.

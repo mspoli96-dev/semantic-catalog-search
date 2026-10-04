@@ -4,7 +4,7 @@ Search a small product catalogue by describing what you need. Compare keyword se
 
 [Demo](https://webytex-semantic-search.vercel.app) · [Repository](https://github.com/mspoli96-dev/semantic-catalog-search) · [Discuss a project](https://business.webytex.com/#quick-contact)
 
-**Release status, October 3, 2026:** 12 tests, type checking, the production build, and the real-model evaluation passed. Local browser checks covered actual searches, filters, rapid successive requests, and mobile layout. The public repository is created and the demo URL is assigned; source publication and hosted verification remain pending.
+**Release status:** source is public and the [diagnostic revision passed GitHub CI](https://github.com/mspoli96-dev/semantic-catalog-search/actions/runs/37170824722). The initial hosted browser attempt failed while downloading the model, despite successful local inference. A correction prepares verified model assets for delivery from the demo's own origin; its build, deployment, and hosted inference checks remain pending. See [validation](docs/VALIDATION.md) for the distinction between local results and hosted operation.
 
 ## Try an idea
 
@@ -23,7 +23,6 @@ Use Node.js 24.x and npm:
 
 ```bash
 npm ci
-npm run index
 npm run dev
 ```
 
@@ -35,7 +34,15 @@ ONNXRUNTIME_NODE_INSTALL_CUDA=skip npm ci
 
 This preserves the Node.js CPU evaluation and browser WebAssembly inference paths used here. The CI environment and Vercel install command use this setting.
 
-Open [http://127.0.0.1:3000](http://127.0.0.1:3000). A generated index with 48 real 384-dimensional product vectors is included. You can skip `npm run index` for an unchanged checkout. Rerun it whenever the catalogue or model configuration changes; it writes `public/search-index.json` using local model inference.
+Open [http://127.0.0.1:3000](http://127.0.0.1:3000). `npm run dev` and `npm run build` automatically run `prepare:model` first. That preparation retrieves the pinned model files, verifies their SHA-256 hashes, and places them under `public/models/<revision>/Xenova/all-MiniLM-L6-v2/`, with the model manifest and license notices. Valid cached files can be reused. The generated model directory is Git-ignored; a fresh build needs access to the public asset host until those files are cached.
+
+To prepare the assets explicitly:
+
+```bash
+npm run prepare:model
+```
+
+A generated index with 48 real 384-dimensional product vectors is included. Run `npm run index` only when the catalogue or model configuration changes; it writes `public/search-index.json` using local model inference. Indexing and evaluation remain CPU operations, not paid API requests.
 
 ```bash
 npm run typecheck
@@ -67,8 +74,8 @@ No API key is required. Optional `.env.local` values are:
 
 ## How it works
 
-1. At build time, the catalogue is embedded into 384-dimensional vectors and saved with its catalogue hash and model configuration.
-2. In the browser, a Web Worker loads the catalogue index and an embedding model.
+1. An indexing command embeds the catalogue into 384-dimensional vectors and saves its catalogue hash and model configuration.
+2. Build preparation stages the pinned model and tokenizer assets for static hosting. In the browser, a Web Worker loads them from the same origin as the demo, with remote-model fallback disabled.
 3. The worker embeds the search phrase locally and runs Orama full-text and vector searches with the same filters.
 4. The interface displays both result lists for comparison.
 
@@ -85,7 +92,7 @@ The [model card](https://huggingface.co/Xenova/all-MiniLM-L6-v2) describes its 3
 
 ## Privacy and practical limits
 
-The browser downloads public model and runtime assets on first use. The application does not send search phrases to a model provider, store query logs, or use a paid inference API. Asset hosts still receive ordinary download requests. Browser caching can reduce later downloads, but full offline operation is not promised.
+The browser downloads the model and tokenizer from the demo's own origin on first use. Inference-runtime assets still use a public CDN. The application does not send search phrases to a model provider, store query logs, or use a paid inference API. The hosting service and runtime CDN receive ordinary asset requests. Browser caching can reduce later downloads, but full offline operation is not promised.
 
 The model and catalogue run on the user's device. Startup time and memory use vary by browser and hardware. The entire synthetic catalogue and index are public, so this architecture is not suitable for confidential records or customer-specific prices without changes.
 

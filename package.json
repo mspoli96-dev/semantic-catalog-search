@@ -6,6 +6,9 @@
   "license": "MIT",
   "engines": { "node": "24.x" },
   "scripts": {
+    "prepare:model": "tsx scripts/prepare-model.ts",
+    "predev": "npm run prepare:model",
+    "prebuild": "npm run prepare:model",
     "dev": "next dev --webpack --hostname 127.0.0.1",
     "build": "next build --webpack",
     "start": "next start --hostname 127.0.0.1",

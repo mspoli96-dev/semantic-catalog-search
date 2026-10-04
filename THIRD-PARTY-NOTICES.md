@@ -12,7 +12,7 @@ The MIT license at this repository's root applies to its original code, syntheti
 | `sentence-transformers/all-MiniLM-L6-v2` | Sentence Transformers contributors | [Original model](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) |
 | ONNX Runtime | Copyright (c) Microsoft Corporation | [MIT](https://github.com/microsoft/onnxruntime/blob/main/LICENSE) |
 
-The application selects q8 weights at the revision recorded in `src/lib/model-config.ts`; it does not modify or fine-tune those weights. The model is downloaded from its public host. Catalogue vectors are generated from this project's synthetic product descriptions.
+The application selects q8 weights at the revision recorded in `src/lib/model-config.ts`; it does not modify or fine-tune those weights. Build preparation downloads and verifies the public model files, then includes them as static assets served by the demo. It also writes `LICENSE-NOTICES.txt`, containing these notices and the full Apache License 2.0 text, alongside the model files. Generated model assets are excluded from Git. Their Apache License 2.0 remains separate from the project's MIT license. Catalogue vectors are generated from this project's synthetic product descriptions.
 
 ## Interface and tooling
 
@@ -226,4 +226,3 @@ When redistributing bundled dependencies, preserve their copyright, license, and
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-

@@ -5,7 +5,9 @@ import { createSearchEngine, validateEmbedding, validateSearch } from "../lib/se
 import { EMBEDDING_DTYPE, EMBEDDING_MODEL, EMBEDDING_POOLING, MAX_MODEL_TOKENS, MODEL_REVISION } from "../lib/model-config";
 import { searchFailureMessage, type SearchStage } from "../lib/worker-errors";
 
-env.allowLocalModels = false;
+env.allowLocalModels = true;
+env.allowRemoteModels = false;
+env.localModelPath = `/models/${MODEL_REVISION}/`;
 env.useBrowserCache = true;
 if (env.backends.onnx.wasm) env.backends.onnx.wasm.numThreads = 1;
 

@@ -3,6 +3,7 @@ import { PRODUCTS } from "../data/catalog";
 import type { WorkerRequest, WorkerResponse } from "../lib/contracts";
 import { createSearchEngine, validateEmbedding, validateSearch } from "../lib/search";
 import { EMBEDDING_DTYPE, EMBEDDING_MODEL, EMBEDDING_POOLING, MAX_MODEL_TOKENS, MODEL_REVISION } from "../lib/model-config";
+import { searchFailureMessage, type SearchStage } from "../lib/worker-errors";
 
 env.allowLocalModels = false;
 env.useBrowserCache = true;
@@ -14,20 +15,24 @@ function send(message: WorkerResponse) {
 
 let initialization: Promise<{ extractor: FeatureExtractionPipeline; engine: Awaited<ReturnType<typeof createSearchEngine>> }> | null = null;
 let announcedReady = false;
+let stage: SearchStage = "catalogue";
 
 function initialize() {
   if (!initialization) {
     initialization = (async () => {
+      stage = "catalogue";
       send({ type: "loading", message: "Loading the catalogue index…", progress: null });
       const response = await fetch("/search-index.json");
       if (!response.ok) throw new Error("The catalogue index is unavailable. Refresh the page and try again.");
       const engine = await createSearchEngine(PRODUCTS, await response.json());
+      stage = "model-download";
       send({ type: "loading", message: "Downloading the on-device search model…", progress: null });
       const extractor = await pipeline("feature-extraction", EMBEDDING_MODEL, {
         revision: MODEL_REVISION,
         dtype: EMBEDDING_DTYPE,
         device: "wasm",
         progress_callback: (progress) => {
+          if (progress.status === "done" && progress.file?.endsWith(".onnx")) stage = "runtime-initialization";
           if (progress.status === "progress" && progress.file?.endsWith(".onnx")) {
             send({ type: "loading", message: "Downloading the on-device search model…", progress: Math.min(100, Math.max(0, progress.progress)) });
           }
@@ -58,17 +63,19 @@ self.addEventListener("message", (event: MessageEvent<WorkerRequest>) => {
       }
       const query = validateSearch(message.query, message.filters);
       const { extractor, engine } = await initialize();
+      stage = "query-embedding";
       const encoded = extractor.tokenizer(query, { truncation: false, padding: false });
       if (encoded.input_ids.size > MAX_MODEL_TOKENS) throw new Error("This search has too many tokens. Use a shorter description.");
       const started = performance.now();
       const output = await extractor(query, { pooling: EMBEDDING_POOLING, normalize: true });
       const vector = Array.from(output.data) as number[];
       validateEmbedding(vector);
+      stage = "ranking";
       const result = await engine.search(query, vector, message.filters, performance.now() - started);
       send({ type: "result", requestId: message.requestId, result });
     } catch (error) {
       const knownValidation = error instanceof Error && /^(Enter a description|Keep your search|Choose a valid|This search has too many|The catalogue|The search vector)/.test(error.message);
-      send({ type: "error", ...(message.type === "search" ? { requestId: message.requestId } : {}), message: knownValidation ? (error as Error).message : "The search model could not run. Check your connection, refresh the page, and try again." });
+      send({ type: "error", ...(message.type === "search" ? { requestId: message.requestId } : {}), message: knownValidation ? (error as Error).message : searchFailureMessage(error, stage) });
     }
   });
 });

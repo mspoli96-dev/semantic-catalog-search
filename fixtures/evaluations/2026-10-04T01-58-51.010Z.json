@@ -1,0 +1,693 @@
+{
+  "generatedAt": "2026-10-04T01:58:51.010Z",
+  "model": "Xenova/all-MiniLM-L6-v2",
+  "revision": "751bff37182d3f1213fa05d7196b954e230abad9",
+  "dtype": "q8",
+  "catalogueHash": "5324ca0eb542f7fd4138d6cfa45d535483d04d7439a8952c8d530625bdb441b0",
+  "method": "Synthetic relevance cases authored from catalogue attributes before the first embedding evaluation. These are a small development sanity set, not evidence of production search quality.",
+  "runtime": "Node.js CPU; query timings exclude model download and do not represent browser latency.",
+  "queries": 10,
+  "keywordTop1": 3,
+  "semanticTop1": 8,
+  "keywordFoundInTop6": 8,
+  "semanticFoundInTop6": 10,
+  "keywordMrrAt6": 0.4533333333333333,
+  "semanticMrrAt6": 0.9,
+  "results": [
+    {
+      "id": "hot-drink",
+      "query": "keep my coffee hot",
+      "relevantIds": [
+        "travel-09",
+        "outdoors-02"
+      ],
+      "category": "all",
+      "maxPrice": null,
+      "keywordFirstRelevantRank": 5,
+      "semanticFirstRelevantRank": 1,
+      "keyword": [
+        {
+          "id": "desk-04",
+          "score": 1.7846443778135288
+        },
+        {
+          "id": "desk-10",
+          "score": 1.4742455814067181
+        },
+        {
+          "id": "outdoors-08",
+          "score": 1.0869003675616755
+        },
+        {
+          "id": "travel-02",
+          "score": 1.0560866517387695
+        },
+        {
+          "id": "outdoors-02",
+          "score": 1.0560866517387695
+        },
+        {
+          "id": "desk-03",
+          "score": 1.0269588114035664
+        }
+      ],
+      "semantic": [
+        {
+          "id": "travel-09",
+          "score": 0.31703729064838493
+        },
+        {
+          "id": "desk-10",
+          "score": 0.31226188579917036
+        },
+        {
+          "id": "outdoors-03",
+          "score": 0.24751093902314936
+        },
+        {
+          "id": "everyday-03",
+          "score": 0.2123553651934217
+        },
+        {
+          "id": "outdoors-02",
+          "score": 0.18440051403193447
+        },
+        {
+          "id": "travel-05",
+          "score": 0.13644786153041535
+        }
+      ],
+      "timing": {
+        "embeddingMs": 5.3659000000000106,
+        "keywordMs": 1.2081999999999198,
+        "semanticMs": 0.8909999999999627,
+        "dimension": 384,
+        "catalogueSize": 48
+      }
+    },
+    {
+      "id": "office-noise",
+      "query": "something for a noisy office",
+      "relevantIds": [
+        "desk-02"
+      ],
+      "category": "all",
+      "maxPrice": null,
+      "keywordFirstRelevantRank": null,
+      "semanticFirstRelevantRank": 1,
+      "keyword": [
+        {
+          "id": "everyday-11",
+          "score": 4.500140841258415
+        },
+        {
+          "id": "desk-01",
+          "score": 3.6708666338466385
+        },
+        {
+          "id": "travel-11",
+          "score": 3.6149612739229005
+        },
+        {
+          "id": "everyday-05",
+          "score": 3.4249794395128825
+        },
+        {
+          "id": "travel-03",
+          "score": 3.389550649438922
+        },
+        {
+          "id": "desk-09",
+          "score": 3.2360561666059735
+        }
+      ],
+      "semantic": [
+        {
+          "id": "desk-02",
+          "score": 0.4398393202039302
+        },
+        {
+          "id": "desk-05",
+          "score": 0.3688945007865916
+        },
+        {
+          "id": "desk-03",
+          "score": 0.3066280735998021
+        },
+        {
+          "id": "desk-06",
+          "score": 0.2915953324445452
+        },
+        {
+          "id": "outdoors-10",
+          "score": 0.28177276856146966
+        },
+        {
+          "id": "everyday-11",
+          "score": 0.2785688705889449
+        }
+      ],
+      "timing": {
+        "embeddingMs": 2.7930000000000064,
+        "keywordMs": 0.48500000000001364,
+        "semanticMs": 0.11869999999998981,
+        "dimension": 384,
+        "catalogueSize": 48
+      }
+    },
+    {
+      "id": "computer-protection",
+      "query": "protect my laptop on the commute",
+      "relevantIds": [
+        "travel-03",
+        "travel-01"
+      ],
+      "category": "all",
+      "maxPrice": null,
+      "keywordFirstRelevantRank": 4,
+      "semanticFirstRelevantRank": 1,
+      "keyword": [
+        {
+          "id": "desk-06",
+          "score": 3.922329321188383
+        },
+        {
+          "id": "everyday-06",
+          "score": 3.105207351676803
+        },
+        {
+          "id": "everyday-04",
+          "score": 2.9510254575992194
+        },
+        {
+          "id": "travel-03",
+          "score": 2.6482017803229976
+        },
+        {
+          "id": "outdoors-12",
+          "score": 2.6139543696326726
+        },
+        {
+          "id": "outdoors-07",
+          "score": 2.3732537317560682
+        }
+      ],
+      "semantic": [
+        {
+          "id": "travel-03",
+          "score": 0.45884110159103264
+        },
+        {
+          "id": "desk-01",
+          "score": 0.3009400839842009
+        },
+        {
+          "id": "travel-01",
+          "score": 0.30049232911252055
+        },
+        {
+          "id": "desk-04",
+          "score": 0.279257966725473
+        },
+        {
+          "id": "outdoors-10",
+          "score": 0.27124809779681214
+        },
+        {
+          "id": "travel-02",
+          "score": 0.2533192906889519
+        }
+      ],
+      "timing": {
+        "embeddingMs": 2.8425999999999476,
+        "keywordMs": 0.211400000000026,
+        "semanticMs": 0.10590000000001965,
+        "dimension": 384,
+        "catalogueSize": 48
+      }
+    },
+    {
+      "id": "record-ideas",
+      "query": "a place to write down ideas",
+      "relevantIds": [
+        "desk-05",
+        "everyday-08",
+        "travel-12",
+        "desk-12"
+      ],
+      "category": "all",
+      "maxPrice": null,
+      "keywordFirstRelevantRank": 3,
+      "semanticFirstRelevantRank": 1,
+      "keyword": [
+        {
+          "id": "everyday-11",
+          "score": 5.055922630592208
+        },
+        {
+          "id": "desk-07",
+          "score": 5.011557951327786
+        },
+        {
+          "id": "travel-12",
+          "score": 4.798468758713965
+        },
+        {
+          "id": "everyday-12",
+          "score": 4.570958940772993
+        },
+        {
+          "id": "desk-01",
+          "score": 3.9730512563658875
+        },
+        {
+          "id": "everyday-01",
+          "score": 3.7085987897181236
+        }
+      ],
+      "semantic": [
+        {
+          "id": "desk-05",
+          "score": 0.30980925914494445
+        },
+        {
+          "id": "travel-12",
+          "score": 0.2923300166418176
+        },
+        {
+          "id": "everyday-08",
+          "score": 0.26956471549545213
+        },
+        {
+          "id": "outdoors-10",
+          "score": 0.2666335782841941
+        },
+        {
+          "id": "desk-12",
+          "score": 0.26612678863492434
+        },
+        {
+          "id": "everyday-06",
+          "score": 0.20433638956357822
+        }
+      ],
+      "timing": {
+        "embeddingMs": 2.262100000000032,
+        "keywordMs": 0.3949000000000069,
+        "semanticMs": 0.12869999999998072,
+        "dimension": 384,
+        "catalogueSize": 48
+      }
+    },
+    {
+      "id": "camp-seat",
+      "query": "sit comfortably around a campfire",
+      "relevantIds": [
+        "outdoors-04"
+      ],
+      "category": "all",
+      "maxPrice": null,
+      "keywordFirstRelevantRank": null,
+      "semanticFirstRelevantRank": 1,
+      "keyword": [
+        {
+          "id": "everyday-11",
+          "score": 4.500140841258415
+        },
+        {
+          "id": "everyday-10",
+          "score": 4.462235537630285
+        },
+        {
+          "id": "everyday-08",
+          "score": 3.4687361669804355
+        },
+        {
+          "id": "desk-01",
+          "score": 3.432598439512028
+        },
+        {
+          "id": "everyday-05",
+          "score": 3.4249794395128825
+        },
+        {
+          "id": "travel-11",
+          "score": 3.37669307958829
+        }
+      ],
+      "semantic": [
+        {
+          "id": "outdoors-04",
+          "score": 0.4081539406601798
+        },
+        {
+          "id": "outdoors-06",
+          "score": 0.3321492098176584
+        },
+        {
+          "id": "outdoors-03",
+          "score": 0.2525619171151162
+        },
+        {
+          "id": "outdoors-11",
+          "score": 0.2446966579574763
+        },
+        {
+          "id": "everyday-12",
+          "score": 0.22910349922733864
+        },
+        {
+          "id": "outdoors-01",
+          "score": 0.20488113407860384
+        }
+      ],
+      "timing": {
+        "embeddingMs": 1.8087000000000444,
+        "keywordMs": 0.23739999999997963,
+        "semanticMs": 0.09030000000007021,
+        "dimension": 384,
+        "catalogueSize": 48
+      }
+    },
+    {
+      "id": "rain-cover",
+      "query": "stay dry on the walk home",
+      "relevantIds": [
+        "travel-06",
+        "outdoors-07",
+        "everyday-07"
+      ],
+      "category": "all",
+      "maxPrice": null,
+      "keywordFirstRelevantRank": 4,
+      "semanticFirstRelevantRank": 2,
+      "keyword": [
+        {
+          "id": "everyday-06",
+          "score": 3.105207351676803
+        },
+        {
+          "id": "outdoors-12",
+          "score": 2.6139543696326726
+        },
+        {
+          "id": "travel-08",
+          "score": 2.4503180494887515
+        },
+        {
+          "id": "outdoors-07",
+          "score": 2.3732537317560682
+        },
+        {
+          "id": "everyday-11",
+          "score": 2.3059717910662902
+        },
+        {
+          "id": "everyday-05",
+          "score": 2.020401881204929
+        }
+      ],
+      "semantic": [
+        {
+          "id": "outdoors-01",
+          "score": 0.3320355121155541
+        },
+        {
+          "id": "outdoors-07",
+          "score": 0.33029791261516256
+        },
+        {
+          "id": "outdoors-05",
+          "score": 0.31303120796832773
+        },
+        {
+          "id": "travel-06",
+          "score": 0.28536868404770854
+        },
+        {
+          "id": "travel-02",
+          "score": 0.26368908446014855
+        },
+        {
+          "id": "outdoors-10",
+          "score": 0.24808107762036788
+        }
+      ],
+      "timing": {
+        "embeddingMs": 1.5954000000000406,
+        "keywordMs": 0.12779999999997926,
+        "semanticMs": 0.06320000000005166,
+        "dimension": 384,
+        "catalogueSize": 48
+      }
+    },
+    {
+      "id": "exact-cubes",
+      "query": "Packing Cube Set",
+      "relevantIds": [
+        "travel-04"
+      ],
+      "category": "all",
+      "maxPrice": null,
+      "keywordFirstRelevantRank": 1,
+      "semanticFirstRelevantRank": 1,
+      "keyword": [
+        {
+          "id": "travel-04",
+          "score": 4.671282751122176
+        },
+        {
+          "id": "desk-03",
+          "score": 1.6370484579532878
+        },
+        {
+          "id": "everyday-03",
+          "score": 1.2903344443888412
+        }
+      ],
+      "semantic": [
+        {
+          "id": "travel-04",
+          "score": 0.677220067359073
+        },
+        {
+          "id": "everyday-09",
+          "score": 0.368327384403074
+        },
+        {
+          "id": "travel-01",
+          "score": 0.36114541070222
+        },
+        {
+          "id": "everyday-02",
+          "score": 0.32824654893319316
+        },
+        {
+          "id": "travel-02",
+          "score": 0.3043663570744576
+        },
+        {
+          "id": "desk-11",
+          "score": 0.2869686035654278
+        }
+      ],
+      "timing": {
+        "embeddingMs": 1.647199999999998,
+        "keywordMs": 0.06970000000001164,
+        "semanticMs": 0.06460000000004129,
+        "dimension": 384,
+        "catalogueSize": 48
+      }
+    },
+    {
+      "id": "exact-charger",
+      "query": "Wireless Charging Pad",
+      "relevantIds": [
+        "desk-04"
+      ],
+      "category": "all",
+      "maxPrice": null,
+      "keywordFirstRelevantRank": 1,
+      "semanticFirstRelevantRank": 1,
+      "keyword": [
+        {
+          "id": "desk-04",
+          "score": 4.096344779473756
+        },
+        {
+          "id": "travel-08",
+          "score": 2.2369096029124926
+        },
+        {
+          "id": "outdoors-10",
+          "score": 1.3596690381920549
+        },
+        {
+          "id": "desk-11",
+          "score": 1.2059179588762
+        },
+        {
+          "id": "travel-01",
+          "score": 1.1743718492942328
+        },
+        {
+          "id": "travel-03",
+          "score": 1.1743718492942328
+        }
+      ],
+      "semantic": [
+        {
+          "id": "desk-04",
+          "score": 0.7808101398483255
+        },
+        {
+          "id": "travel-03",
+          "score": 0.4218883654209908
+        },
+        {
+          "id": "travel-08",
+          "score": 0.39293399395590856
+        },
+        {
+          "id": "everyday-10",
+          "score": 0.38056946599396807
+        },
+        {
+          "id": "travel-07",
+          "score": 0.34999184981544584
+        },
+        {
+          "id": "desk-11",
+          "score": 0.33018994370742694
+        }
+      ],
+      "timing": {
+        "embeddingMs": 7.283500000000004,
+        "keywordMs": 0.10770000000002256,
+        "semanticMs": 0.0706000000000131,
+        "dimension": 384,
+        "catalogueSize": 48
+      }
+    },
+    {
+      "id": "negation",
+      "query": "headphones without active noise cancellation",
+      "relevantIds": [
+        "everyday-11"
+      ],
+      "category": "all",
+      "maxPrice": null,
+      "keywordFirstRelevantRank": 2,
+      "semanticFirstRelevantRank": 2,
+      "keyword": [
+        {
+          "id": "desk-02",
+          "score": 5.747257997827641
+        },
+        {
+          "id": "everyday-11",
+          "score": 5.747257997827641
+        },
+        {
+          "id": "desk-04",
+          "score": 1.1195491862891058
+        },
+        {
+          "id": "outdoors-08",
+          "score": 1.0869003675616755
+        },
+        {
+          "id": "travel-04",
+          "score": 1.0269588114035664
+        },
+        {
+          "id": "everyday-06",
+          "score": 0.9993832346206659
+        }
+      ],
+      "semantic": [
+        {
+          "id": "desk-02",
+          "score": 0.7269575933843777
+        },
+        {
+          "id": "everyday-11",
+          "score": 0.5402691498926572
+        },
+        {
+          "id": "travel-08",
+          "score": 0.42934974655908864
+        },
+        {
+          "id": "desk-04",
+          "score": 0.18756633172732592
+        },
+        {
+          "id": "outdoors-05",
+          "score": 0.11726816497305066
+        },
+        {
+          "id": "everyday-08",
+          "score": 0.10847060339263104
+        }
+      ],
+      "timing": {
+        "embeddingMs": 1.9247000000000298,
+        "keywordMs": 0.11820000000000164,
+        "semanticMs": 0.07280000000002929,
+        "dimension": 384,
+        "catalogueSize": 48
+      }
+    },
+    {
+      "id": "filtered-rain",
+      "query": "stay dry in the rain",
+      "relevantIds": [
+        "travel-06"
+      ],
+      "category": "Travel",
+      "maxPrice": 27,
+      "keywordFirstRelevantRank": 1,
+      "semanticFirstRelevantRank": 1,
+      "keyword": [
+        {
+          "id": "travel-06",
+          "score": 3.6617998742907547
+        },
+        {
+          "id": "travel-12",
+          "score": 2.2423709700190075
+        },
+        {
+          "id": "travel-05",
+          "score": 1.4787368110433725
+        }
+      ],
+      "semantic": [
+        {
+          "id": "travel-06",
+          "score": 0.47747402799755967
+        },
+        {
+          "id": "travel-10",
+          "score": 0.1589399878975296
+        },
+        {
+          "id": "travel-12",
+          "score": 0.15671048244054778
+        },
+        {
+          "id": "travel-05",
+          "score": 0.08629796425175086
+        }
+      ],
+      "timing": {
+        "embeddingMs": 2.081099999999992,
+        "keywordMs": 0.8161000000000058,
+        "semanticMs": 0.17610000000001946,
+        "dimension": 384,
+        "catalogueSize": 48
+      }
+    }
+  ]
+}

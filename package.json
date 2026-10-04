@@ -1,0 +1,35 @@
+{
+  "name": "semantic-catalog-search",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A small semantic product search demo with local AI embeddings and an embedded vector database.",
+  "license": "MIT",
+  "engines": { "node": "24.x" },
+  "scripts": {
+    "dev": "next dev --webpack --hostname 127.0.0.1",
+    "build": "next build --webpack",
+    "start": "next start --hostname 127.0.0.1",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run",
+    "index": "tsx scripts/build-index.ts",
+    "evaluate": "tsx scripts/evaluate-search.ts"
+  },
+  "dependencies": {
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "@orama/orama": "3.1.18",
+    "@huggingface/transformers": "3.8.1",
+    "lucide-react": "1.51.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsx": "4.23.15",
+    "vitest": "5.0.3",
+    "sharp": "0.35.5"
+  },
+  "overrides": { "sharp": "0.35.5" }
+}

@@ -1,0 +1,15 @@
+{
+  "description": "Synthetic relevance cases authored from catalogue attributes before the first embedding evaluation. These are a small development sanity set, not evidence of production search quality.",
+  "cases": [
+    { "id": "hot-drink", "query": "keep my coffee hot", "relevantIds": ["travel-09", "outdoors-02"], "category": "all", "maxPrice": null },
+    { "id": "office-noise", "query": "something for a noisy office", "relevantIds": ["desk-02"], "category": "all", "maxPrice": null },
+    { "id": "computer-protection", "query": "protect my laptop on the commute", "relevantIds": ["travel-03", "travel-01"], "category": "all", "maxPrice": null },
+    { "id": "record-ideas", "query": "a place to write down ideas", "relevantIds": ["desk-05", "everyday-08", "travel-12", "desk-12"], "category": "all", "maxPrice": null },
+    { "id": "camp-seat", "query": "sit comfortably around a campfire", "relevantIds": ["outdoors-04"], "category": "all", "maxPrice": null },
+    { "id": "rain-cover", "query": "stay dry on the walk home", "relevantIds": ["travel-06", "outdoors-07", "everyday-07"], "category": "all", "maxPrice": null },
+    { "id": "exact-cubes", "query": "Packing Cube Set", "relevantIds": ["travel-04"], "category": "all", "maxPrice": null },
+    { "id": "exact-charger", "query": "Wireless Charging Pad", "relevantIds": ["desk-04"], "category": "all", "maxPrice": null },
+    { "id": "negation", "query": "headphones without active noise cancellation", "relevantIds": ["everyday-11"], "category": "all", "maxPrice": null },
+    { "id": "filtered-rain", "query": "stay dry in the rain", "relevantIds": ["travel-06"], "category": "Travel", "maxPrice": 27 }
+  ]
+}

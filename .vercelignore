@@ -1,0 +1,9 @@
+.git/
+.env*
+.cache/
+.local/
+.next/
+node_modules/
+*.tsbuildinfo
+*.log
+docs/ARTICLE.md

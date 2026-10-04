@@ -1,0 +1,9 @@
+export const EMBEDDING_MODEL = "Xenova/all-MiniLM-L6-v2";
+export const MODEL_REVISION = "751bff37182d3f1213fa05d7196b954e230abad9";
+export const EMBEDDING_DTYPE = "q8";
+export const EMBEDDING_DIMENSION = 384;
+export const EMBEDDING_POOLING = "mean";
+export const MAX_QUERY_CHARS = 200;
+export const MAX_MODEL_TOKENS = 256;
+export const SEARCH_LIMIT = 6;
+export const INDEX_VERSION = 1;

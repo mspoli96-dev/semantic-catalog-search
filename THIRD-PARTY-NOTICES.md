@@ -10,9 +10,11 @@ The MIT license at this repository's root applies to its original code, syntheti
 | Transformers.js | Hugging Face and contributors | [Apache License 2.0](https://github.com/huggingface/transformers.js/blob/main/LICENSE) |
 | `Xenova/all-MiniLM-L6-v2` | Sentence Transformers model, ONNX conversion by Xenova and contributors | [Model card, Apache License 2.0](https://huggingface.co/Xenova/all-MiniLM-L6-v2) |
 | `sentence-transformers/all-MiniLM-L6-v2` | Sentence Transformers contributors | [Original model](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) |
-| ONNX Runtime | Copyright (c) Microsoft Corporation | [MIT](https://github.com/microsoft/onnxruntime/blob/main/LICENSE) |
+| ONNX Runtime | Copyright (c) Microsoft Corporation | [MIT at the pinned runtime commit](https://github.com/microsoft/onnxruntime/blob/89f8206ba4/LICENSE); full text in `scripts/onnxruntime-LICENSE.txt` |
 
 The application selects q8 weights at the revision recorded in `src/lib/model-config.ts`; it does not modify or fine-tune those weights. Build preparation downloads and verifies the public model files, then includes them as static assets served by the demo. It also writes `LICENSE-NOTICES.txt`, containing these notices and the full Apache License 2.0 text, alongside the model files. Generated model assets are excluded from Git. Their Apache License 2.0 remains separate from the project's MIT license. Catalogue vectors are generated from this project's synthetic product descriptions.
+
+The pinned ONNX Runtime WebAssembly binary is copied from the installed Transformers.js distribution, verified by hash, and served as a static asset. Build preparation places the full Microsoft MIT license beside it as `runtime/LICENSE.txt`. No changes are made to the binary.
 
 ## Interface and tooling
 

@@ -1,6 +1,6 @@
 # Validation
 
-The October 3, 2026 local checkpoint covers code, catalogue embeddings, real-model comparisons, and local production-browser interaction. Public source and CI were subsequently verified. The initial hosted browser attempt failed during model download; a same-origin asset correction remains pending final build and hosted verification.
+The October 3, 2026 local checkpoint covers code, catalogue embeddings, real-model comparisons, and local production-browser interaction. Public source, CI, and the matching production deployment are verified. The initial hosted model-download failure was followed by a verified same-origin asset correction and a successful real browser search.
 
 ## Catalogue
 
@@ -48,22 +48,23 @@ Two semantic errors matter: the unfiltered walking-in-rain query ranks Trail Day
 | Check | Status |
 | --- | --- |
 | TypeScript | Passed |
-| Unit tests | Latest local run: 14 passed, including safe model-loading error diagnostics |
-| Production build | Initial local build passed at 23:01 Montevideo; the same-origin asset correction awaits its final build check |
+| Unit tests | Latest local run: 19 passed, including safe diagnostics and bounded asset-loading behaviour |
+| Production build | Passed after the same-origin model and WebAssembly asset correction |
 | Catalogue embedding generation | Passed; 48 vectors, 384 dimensions, normalized; index 210,556 bytes |
 | Actual-model relevance evaluation | Completed for all ten authored queries; results and failures above |
-| Browser model loading and live query inference | Passed locally: noisy-office query ranked Quiet Focus Headphones first; additional reading-after-dark query ranked Clip-On Reading Light first |
-| Shared category and price filters | Evaluation assertions passed; local browser Travel / CAD 50 search returned only eligible semantic products, led by the CAD 36 Insulated Travel Tumbler; keyword list empty |
+| Browser model loading and live query inference | Passed locally and on the public deployment: noisy-office query ranked Quiet Focus Headphones first; reading-after-dark query ranked Clip-On Reading Light first |
+| Shared category and price filters | Evaluation assertions passed; local and public browser Travel / CAD 50 searches returned only eligible semantic products, led by the CAD 36 Insulated Travel Tumbler; keyword list empty |
 | Successive search requests | Passed locally: two rapid requests preserved the latest query result |
 | Empty search / clear | Passed locally: clearing restored catalogue browsing and disabled empty submission |
-| Mobile layout | Passed locally at 375 CSS pixels, without horizontal overflow |
-| Production browser console | No warnings or errors captured in the local check |
+| Mobile layout | Passed locally and on the public deployment at 375 CSS pixels, without horizontal overflow |
+| Repeat visit | Public page reload followed by the noisy-office search returned the expected results successfully |
+| Production browser console | No warnings or errors captured in the local check or the successful hosted search check |
 | Full keyboard and model-download error coverage | Pending |
 | Query privacy | Worker source has no query-upload API; browser request-payload tracing was not available, so no measured network-trace claim is made |
-| Public source and hosted deployment | Source pushed and CI passed; initial deployment ready, but hosted model download failed; correction pending retest |
+| Public source and hosted deployment | Correction source published; GitHub CI passed; matching production deployment ready; hosted download and inference passed |
 | Runtime dependency audit | Zero reported vulnerabilities at the verification checkpoint; not a security certification |
 
-The selected model weight file contains 22,972,370 bytes, approximately 23 MB, plus separate tokenizer and runtime assets. Measure the actual browser transfer separately before describing total page weight or startup time.
+The selected model weights, tokenizer, configuration files, and WebAssembly binary total 45,281,066 bytes, approximately 45.3 MB. This known asset total excludes application JavaScript, the catalogue index, runtime JavaScript, and other page resources. Measure actual browser transfer separately before describing total page weight or startup time.
 
 The local noisy-office browser query reported 81.5 ms for embedding. Its keyword first result was the non-cancelling on-ear product, while semantic search returned the cancelling model. This is a single device observation, not a cold-start or end-to-end latency measurement. Initial model/runtime download performance has not been measured as a benchmark.
 
@@ -81,8 +82,14 @@ Linux CPU installs skip optional CUDA downloads through `ONNXRUNTIME_NODE_INSTAL
 
 Local inference with cached assets succeeded while the hosted attempt failed in the model-download stage. This identifies the failing stage, not a proven cause in a particular network, CDN, or browser policy.
 
-The correction stages pinned model files during `prepare:model`, which runs automatically before development and production builds. Files are checked against a SHA-256 manifest and served from `public/models/<revision>/Xenova/all-MiniLM-L6-v2/` on the demo's own origin. The browser worker disables remote-model fallback. Generated weights remain outside Git; fresh build environments download them before packaging the site.
+The correction stages pinned model files during `prepare:model`, which runs automatically before development and production builds. Files are checked against a SHA-256 manifest and served from `public/models/<revision>/Xenova/all-MiniLM-L6-v2/` on the demo's own origin. The matching WebAssembly binary is checked against its pinned hash and staged under `public/models/<revision>/runtime/`, alongside its full Microsoft MIT license. Generated assets remain outside Git; fresh build environments prepare them before packaging the site.
 
-This changes asset delivery, not the embedding model, catalogue, or inference location. Runtime files still come from their public CDN. The application has no hosted inference API and does not upload the query to a model provider.
+The browser loader requests 256 KiB ranges, with at most four concurrent requests and three attempts per chunk. It validates the exact Content-Range and byte count, then checks the complete asset's SHA-256. Cached bytes also require verification. Cache writes are optional; inference uses verified in-memory assets even when storage is unavailable. All required model files and the WebAssembly binary are loaded before pipeline initialization. The worker disables remote-model fallback.
 
-The corrected implementation passed 14 unit tests and type checking. Final preparation/build checks and a fresh hosted browser inference test are pending. The existing relevance report remains a local-model result and must not be relabelled as proof that the hosted correction works.
+This changes asset delivery, not the embedding model, catalogue, or inference location. Only the small runtime JavaScript loader remains on a public CDN. The application has no hosted inference API and does not upload the query to a model provider.
+
+The corrected implementation passed 19 unit tests, type checking, verified asset preparation, and a production build. Source revision `86eff86fd93d86311306f3efdf0e20c3ec24e194` is public, its [GitHub CI run](https://github.com/mspoli96-dev/semantic-catalog-search/actions/runs/37171717301) succeeded, and the matching Vercel production deployment is ready.
+
+A fresh hosted run with the custom asset cache initially empty completed runtime and model loading to 100%, then performed the real query “something for a noisy office.” Semantic search returned Quiet Focus Headphones first, while keyword search returned Lightweight On-Ear Headphones first. No browser warnings or errors were captured in that check. This confirms a working hosted download and inference path after the correction; it does not establish a general cold-start performance benchmark.
+
+Additional hosted checks passed: the reading-after-dark query ranked Clip-On Reading Light first; Travel with a CAD 50 maximum returned four eligible semantic products for the coffee query, led by the CAD 36 Insulated Travel Tumbler, and no keyword matches. A mobile viewport measured 375 CSS pixels for both the document and its content, with no horizontal overflow. After resetting the viewport and reloading, the noisy-office search completed successfully again. This repeat visit is an observed functional check, not a measured network-cache or latency benchmark. The ten-case relevance report remains the separately recorded local-model evaluation.

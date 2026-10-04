@@ -4,7 +4,7 @@ Search a small product catalogue by describing what you need. Compare keyword se
 
 [Demo](https://webytex-semantic-search.vercel.app) · [Repository](https://github.com/mspoli96-dev/semantic-catalog-search) · [Discuss a project](https://business.webytex.com/#quick-contact)
 
-**Release status:** source is public and the [diagnostic revision passed GitHub CI](https://github.com/mspoli96-dev/semantic-catalog-search/actions/runs/37170824722). The initial hosted browser attempt failed while downloading the model, despite successful local inference. A correction prepares verified model assets for delivery from the demo's own origin; its build, deployment, and hosted inference checks remain pending. See [validation](docs/VALIDATION.md) for the distinction between local results and hosted operation.
+**Live demo:** public source, [GitHub CI](https://github.com/mspoli96-dev/semantic-catalog-search/actions/runs/37171717301), and the matching Vercel deployment are verified. All 19 tests, type checking, and the build passed. The hosted browser downloaded and verified the model/runtime assets and completed a real semantic search. See [validation](docs/VALIDATION.md) for the evidence and limitations.
 
 ## Try an idea
 
@@ -34,7 +34,7 @@ ONNXRUNTIME_NODE_INSTALL_CUDA=skip npm ci
 
 This preserves the Node.js CPU evaluation and browser WebAssembly inference paths used here. The CI environment and Vercel install command use this setting.
 
-Open [http://127.0.0.1:3000](http://127.0.0.1:3000). `npm run dev` and `npm run build` automatically run `prepare:model` first. That preparation retrieves the pinned model files, verifies their SHA-256 hashes, and places them under `public/models/<revision>/Xenova/all-MiniLM-L6-v2/`, with the model manifest and license notices. Valid cached files can be reused. The generated model directory is Git-ignored; a fresh build needs access to the public asset host until those files are cached.
+Open [http://127.0.0.1:3000](http://127.0.0.1:3000). `npm run dev` and `npm run build` automatically run `prepare:model` first. That preparation retrieves pinned model files, verifies their SHA-256 hashes, and places them under `public/models/<revision>/Xenova/all-MiniLM-L6-v2/`, with the model manifest and license notices. It also stages the pinned ONNX Runtime WebAssembly binary and its MIT license under `public/models/<revision>/runtime/`. Valid cached files can be reused. Generated assets are Git-ignored; a fresh build needs public download access until the required files are cached.
 
 To prepare the assets explicitly:
 
@@ -75,7 +75,7 @@ No API key is required. Optional `.env.local` values are:
 ## How it works
 
 1. An indexing command embeds the catalogue into 384-dimensional vectors and saves its catalogue hash and model configuration.
-2. Build preparation stages the pinned model and tokenizer assets for static hosting. In the browser, a Web Worker loads them from the same origin as the demo, with remote-model fallback disabled.
+2. Build preparation stages the pinned model, tokenizer, and WebAssembly assets for static hosting. A Web Worker downloads them from the demo's own origin in 256 KiB ranges, verifies their hashes, and preloads them before initializing inference. Remote-model fallback is disabled.
 3. The worker embeds the search phrase locally and runs Orama full-text and vector searches with the same filters.
 4. The interface displays both result lists for comparison.
 
@@ -88,11 +88,11 @@ No API key is required. Optional `.env.local` values are:
 | Browser execution | Web Worker and WebAssembly |
 | Model revision | Pinned in `src/lib/model-config.ts` |
 
-The [model card](https://huggingface.co/Xenova/all-MiniLM-L6-v2) describes its 384-dimensional embeddings. The selected [quantized weights](https://huggingface.co/Xenova/all-MiniLM-L6-v2/tree/751bff37182d3f1213fa05d7196b954e230abad9/onnx) occupy 22,972,370 bytes, approximately 23 MB. The tokenizer and inference runtime add to the initial download, so 23 MB is not the complete page transfer size.
+The [model card](https://huggingface.co/Xenova/all-MiniLM-L6-v2) describes its 384-dimensional embeddings. The selected [quantized weights](https://huggingface.co/Xenova/all-MiniLM-L6-v2/tree/751bff37182d3f1213fa05d7196b954e230abad9/onnx) occupy approximately 23 MB, and the WebAssembly runtime adds approximately 21.6 MB. Together with the tokenizer and model configuration, these known assets total **45,281,066 bytes, about 45.3 MB**. This excludes the application, index, runtime JavaScript, and other page assets, so it is not the complete page transfer size.
 
 ## Privacy and practical limits
 
-The browser downloads the model and tokenizer from the demo's own origin on first use. Inference-runtime assets still use a public CDN. The application does not send search phrases to a model provider, store query logs, or use a paid inference API. The hosting service and runtime CDN receive ordinary asset requests. Browser caching can reduce later downloads, but full offline operation is not promised.
+The browser downloads the model, tokenizer, and WebAssembly binary from the demo's own origin on first use. A small runtime JavaScript loader still comes from a public CDN. The application does not send search phrases to a model provider, store query logs, or use a paid inference API. The hosting service and runtime CDN receive ordinary asset requests. Cached bytes are verified before reuse; cache-write failure does not block inference. Full offline operation is not promised.
 
 The model and catalogue run on the user's device. Startup time and memory use vary by browser and hardware. The entire synthetic catalogue and index are public, so this architecture is not suitable for confidential records or customer-specific prices without changes.
 

@@ -1,4 +1,4 @@
-export type SearchStage = "catalogue" | "model-download" | "runtime-initialization" | "query-embedding" | "ranking";
+export type SearchStage = "catalogue" | "model-download" | "runtime-download" | "runtime-initialization" | "query-embedding" | "ranking";
 
 export function searchFailureMessage(error: unknown, stage: SearchStage): string {
   const details = error instanceof Error ? error.message : "";

@@ -4,11 +4,25 @@ import type { WorkerRequest, WorkerResponse } from "../lib/contracts";
 import { createSearchEngine, validateEmbedding, validateSearch } from "../lib/search";
 import { EMBEDDING_DTYPE, EMBEDDING_MODEL, EMBEDDING_POOLING, MAX_MODEL_TOKENS, MODEL_REVISION } from "../lib/model-config";
 import { searchFailureMessage, type SearchStage } from "../lib/worker-errors";
+import { loadAsset } from "../lib/asset-loader";
+import { MODEL_ASSETS, WASM_ASSET } from "../lib/model-assets";
 
 env.allowLocalModels = true;
 env.allowRemoteModels = false;
 env.localModelPath = `/models/${MODEL_REVISION}/`;
-env.useBrowserCache = true;
+env.useBrowserCache = false;
+env.useCustomCache = true;
+const verifiedModelFiles = new Map<string, ArrayBuffer>();
+env.customCache = {
+  async match(request: string | Request) {
+    const input = typeof request === "string" ? request : request.url;
+    const pathname = new URL(input, self.location.origin).pathname;
+    const bytes = verifiedModelFiles.get(pathname);
+    if (!bytes) return undefined;
+    return new Response(bytes, { headers: { "Content-Length": String(bytes.byteLength) } });
+  },
+  async put() {},
+};
 if (env.backends.onnx.wasm) env.backends.onnx.wasm.numThreads = 1;
 
 function send(message: WorkerResponse) {
@@ -27,8 +41,16 @@ function initialize() {
       const response = await fetch("/search-index.json");
       if (!response.ok) throw new Error("The catalogue index is unavailable. Refresh the page and try again.");
       const engine = await createSearchEngine(PRODUCTS, await response.json());
+      stage = "runtime-download";
+      send({ type: "loading", message: "Downloading the local AI runtime…", progress: null });
+      const wasm = await loadAsset(WASM_ASSET, (progress) => send({ type: "loading", message: "Downloading the local AI runtime…", progress }));
+      if (env.backends.onnx.wasm) env.backends.onnx.wasm.wasmBinary = wasm;
       stage = "model-download";
       send({ type: "loading", message: "Downloading the on-device search model…", progress: null });
+      for (const asset of MODEL_ASSETS) {
+        const bytes = await loadAsset(asset, asset.path.endsWith(".onnx") ? (progress) => send({ type: "loading", message: "Downloading the on-device search model…", progress }) : undefined);
+        verifiedModelFiles.set(asset.path, bytes);
+      }
       const extractor = await pipeline("feature-extraction", EMBEDDING_MODEL, {
         revision: MODEL_REVISION,
         dtype: EMBEDDING_DTYPE,

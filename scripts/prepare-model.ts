@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { copyFile, mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { EMBEDDING_MODEL, MODEL_REVISION } from "../src/lib/model-config";
+import { WASM_ASSET } from "../src/lib/model-assets";
 
 const files = [
   { name: "config.json", size: 650, sha256: "7135149f7cffa1a573466c6e4d8423ed73b62fd2332c575bf738a0d033f70df7" },
@@ -69,6 +70,13 @@ async function main() {
   }
   await copyFile("THIRD-PARTY-NOTICES.md", path.join(destination, "LICENSE-NOTICES.txt"));
   await writeFile(path.join(destination, "manifest.json"), JSON.stringify({ model: EMBEDDING_MODEL, revision: MODEL_REVISION, license: "Apache-2.0", source: `https://huggingface.co/${EMBEDDING_MODEL}/tree/${MODEL_REVISION}`, files }, null, 2) + "\n");
+  const runtimeDestination = path.resolve("public", WASM_ASSET.path.slice(1));
+  const wasm = await readFile("node_modules/@huggingface/transformers/dist/ort-wasm-simd-threaded.jsep.wasm");
+  if (!matches(wasm, { name: "ONNX runtime", size: WASM_ASSET.size, sha256: WASM_ASSET.sha256 })) throw new Error("The pinned integrity check failed for the ONNX runtime.");
+  await mkdir(path.dirname(runtimeDestination), { recursive: true });
+  await writeFile(`${runtimeDestination}.partial`, wasm);
+  await rename(`${runtimeDestination}.partial`, runtimeDestination);
+  await copyFile("scripts/onnxruntime-LICENSE.txt", path.join(path.dirname(runtimeDestination), "LICENSE.txt"));
   console.log("Pinned model files are ready for same-origin browser downloads. No model API was called.");
 }
 
